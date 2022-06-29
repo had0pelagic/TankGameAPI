@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankGameAPI", "TankGameAPI\TankGameAPI.csproj", "{84990603-E77D-4324-9556-279FB695494A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankGameInfrastructure", "TankGameInfrastructure\TankGameInfrastructure.csproj", "{A5F19CFD-85B7-49B3-B3EB-9AAD6BB3A2CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TankGameDomain", "TankGameDomain\TankGameDomain.csproj", "{FD1DDB51-F29B-4625-9A14-92EF61B08E52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{84990603-E77D-4324-9556-279FB695494A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84990603-E77D-4324-9556-279FB695494A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84990603-E77D-4324-9556-279FB695494A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84990603-E77D-4324-9556-279FB695494A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5F19CFD-85B7-49B3-B3EB-9AAD6BB3A2CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5F19CFD-85B7-49B3-B3EB-9AAD6BB3A2CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5F19CFD-85B7-49B3-B3EB-9AAD6BB3A2CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5F19CFD-85B7-49B3-B3EB-9AAD6BB3A2CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD1DDB51-F29B-4625-9A14-92EF61B08E52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD1DDB51-F29B-4625-9A14-92EF61B08E52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD1DDB51-F29B-4625-9A14-92EF61B08E52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD1DDB51-F29B-4625-9A14-92EF61B08E52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2EB3D4B-488A-417A-9C2D-62C24A9AEBFD}
+	EndGlobalSection
+EndGlobal
