@@ -15,12 +15,6 @@ namespace TankGameAPI.Controllers
             _tankService = tankService;
         }
 
-        [HttpGet("/test")]
-        public async Task<ActionResult<string>> Test()
-        {
-            return Ok("test");
-        }
-
         [HttpPost("/tank")]
         public async Task<ActionResult<string>> CreateTank(CreateTankModel model)
         {
@@ -31,6 +25,24 @@ namespace TankGameAPI.Controllers
         public async Task<ActionResult<string>> MoveTankLeft(MoveTankModel model)
         {
             return Ok(await _tankService.MoveTankLeft(model));
+        }
+
+        [HttpPost("/tank-right")]
+        public async Task<ActionResult<string>> MoveTankRight(MoveTankModel model)
+        {
+            return Ok(await _tankService.MoveTankRight(model));
+        }
+
+        [HttpPost("/tank-up")]
+        public async Task<ActionResult<string>> MoveTankUp(MoveTankModel model)
+        {
+            return Ok(await _tankService.MoveTankUp(model));
+        }
+
+        [HttpPost("/tank-down")]
+        public async Task<ActionResult<string>> MoveTankDown(MoveTankModel model)
+        {
+            return Ok(await _tankService.MoveTankDown(model));
         }
     }
 }
