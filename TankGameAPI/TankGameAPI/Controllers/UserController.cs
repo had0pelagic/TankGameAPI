@@ -6,7 +6,7 @@ namespace TankGameAPI.Controllers
 {
     [ApiController]
     [Route("/api")]
-    public class UserController
+    public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
 
@@ -15,10 +15,16 @@ namespace TankGameAPI.Controllers
             _userService = userService;
         }
 
-        [Route("/create-user")]
+        [HttpPost("/user")]
         public async Task<ActionResult> CreateUser(CreateUserModel model)
         {
-            throw new NotImplementedException();
+            return Ok(await _userService.CreateUser(model));
+        }
+
+        [HttpGet("/get-user")]
+        public async Task<ActionResult> GetUser()
+        {
+            return Ok(await _userService.GetUser());
         }
     }
 }

@@ -12,6 +12,6 @@ namespace TankGameInfrastructure
 
         public DbSet<User> Users { get; set; }
         public DbSet<Tank> Tanks { get; set; }
-        public Field Field { get; set; }
+        public DbSet<Field> Fields { get; set; }
     }
 }

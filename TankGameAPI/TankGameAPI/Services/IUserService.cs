@@ -1,6 +1,11 @@
-﻿namespace TankGameAPI.Services
+﻿using TankGameAPI.Models;
+
+namespace TankGameAPI.Services
 {
     public interface IUserService
     {
+        public Task<string> CreateUser(CreateUserModel model);
+        public Task<List<UserModel>> GetUser();
+
     }
 }

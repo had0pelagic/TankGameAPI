@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TankGameAPI.Models.Tank;
 using TankGameAPI.Services;
 
 namespace TankGameAPI.Controllers
@@ -18,6 +19,18 @@ namespace TankGameAPI.Controllers
         public async Task<ActionResult<string>> Test()
         {
             return Ok("test");
+        }
+
+        [HttpPost("/tank")]
+        public async Task<ActionResult<string>> CreateTank(CreateTankModel model)
+        {
+            return Ok(await _tankService.CreateTank(model));
+        }
+
+        [HttpPost("/tank-left")]
+        public async Task<ActionResult<string>> MoveTankLeft(MoveTankModel model)
+        {
+            return Ok(await _tankService.MoveTankLeft(model));
         }
     }
 }
