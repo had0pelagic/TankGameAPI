@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models.Tank;
+using TankGameAPI.Utils.Messages;
 using TankGameDomain;
 using TankGameInfrastructure;
 
@@ -23,14 +24,14 @@ namespace TankGameAPI.Services
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.NotFound);
             }
 
             var user = _context.Users.FirstOrDefault(x => x.Name == model.Name);
 
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(Messages.User.NotFound);
             }
 
             var tank = _mapper.Map<Tank>(model);
@@ -50,26 +51,26 @@ namespace TankGameAPI.Services
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.NotFound);
             }
 
             var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(Messages.User.NotFound);
             }
 
             var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
-                throw new Exception("Tank not found");
+                throw new Exception(Messages.Tank.NotFound);
             }
 
             if (field.LeftBorder > tank.XPosition - 1)
             {
-                throw new Exception("Moving out of field is prohibited");
+                throw new Exception(Messages.Field.OutOfBorder);
             }
 
             tank.XPosition--;
@@ -85,26 +86,26 @@ namespace TankGameAPI.Services
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.NotFound);
             }
 
             var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(Messages.User.NotFound);
             }
 
             var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
-                throw new Exception("Tank not found");
+                throw new Exception(Messages.Tank.NotFound);
             }
 
             if (field.RightBorder < tank.XPosition + 1)
             {
-                throw new Exception("Moving out of field is prohibited");
+                throw new Exception(Messages.Field.OutOfBorder);
             }
 
             tank.XPosition++;
@@ -120,26 +121,26 @@ namespace TankGameAPI.Services
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.NotFound);
             }
 
             var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(Messages.User.NotFound);
             }
 
             var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
-                throw new Exception("Tank not found");
+                throw new Exception(Messages.Tank.NotFound);
             }
 
             if (field.TopBorder > tank.YPosition + 1)
             {
-                throw new Exception("Moving out of field is prohibited");
+                throw new Exception(Messages.Field.OutOfBorder);
             }
 
             tank.YPosition++;
@@ -155,26 +156,26 @@ namespace TankGameAPI.Services
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.NotFound);
             }
 
             var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
-                throw new Exception("User not found");
+                throw new Exception(Messages.User.NotFound);
             }
 
             var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
-                throw new Exception("Tank not found");
+                throw new Exception(Messages.Tank.NotFound);
             }
 
             if (field.BottomBorder > tank.YPosition - 1)
             {
-                throw new Exception("Moving out of field is prohibited");
+                throw new Exception(Messages.Field.OutOfBorder);
             }
 
             tank.YPosition--;

@@ -1,8 +1,8 @@
-﻿using Mapster;
-using MapsterMapper;
+﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models.Field;
 using TankGameAPI.Models.Tank;
+using TankGameAPI.Utils.Messages;
 using TankGameDomain;
 using TankGameInfrastructure;
 
@@ -23,7 +23,7 @@ namespace TankGameAPI.Services
         {
             if (_context.Fields.Any())
             {
-                throw new Exception("Field already exists");
+                throw new Exception(Messages.Field.AlreadyExists);
             }
 
             var field = await _context.Fields.AddAsync(new Field()
@@ -42,16 +42,11 @@ namespace TankGameAPI.Services
 
         public async Task<FieldModel> GetField()
         {
-            if (!_context.Fields.Any())
-            {
-                throw new Exception("Field not found");
-            }
-
             var field = await _context.Fields.FirstOrDefaultAsync();
 
             if (field == null)
             {
-                throw new Exception("Field not found");
+                throw new Exception(Messages.Field.AlreadyExists);
             }
 
             var tanks = _context.Tanks
@@ -61,7 +56,7 @@ namespace TankGameAPI.Services
 
             if (tanks.Count == 0)
             {
-                throw new Exception("No tanks in the field");
+                throw new Exception(Messages.Tank.NoTanks);
             }
 
             var fieldInformation = _mapper.Map<FieldModel>(field);
