@@ -1,4 +1,4 @@
-﻿using Mapster;
+﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models.Tank;
 using TankGameDomain;
@@ -9,10 +9,12 @@ namespace TankGameAPI.Services
     public class TankService : ITankService
     {
         private readonly Context _context;
+        private readonly IMapper _mapper;
 
-        public TankService(Context context)
+        public TankService(Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<string> CreateTank(CreateTankModel model)
@@ -31,7 +33,7 @@ namespace TankGameAPI.Services
                 throw new Exception("User not found");
             }
 
-            var tank = model.Adapt<Tank>();
+            var tank = _mapper.Map<Tank>(model);
             tank.Owner = user;
             tank.XPosition = Math.Abs(field.Width / 2);
             tank.YPosition = Math.Abs(field.Height / 2);

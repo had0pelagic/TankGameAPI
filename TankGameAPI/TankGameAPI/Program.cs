@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Extensions;
-using TankGameAPI.Services;
 using TankGameInfrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(options => options.UseInMemoryDatabase("tank"));
-builder.Services.AddScoped<ITankService, TankService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IFieldService, FieldService>();
+
+builder.AddServices();
+builder.AddMapper();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
