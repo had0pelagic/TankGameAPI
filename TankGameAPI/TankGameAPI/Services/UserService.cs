@@ -1,6 +1,7 @@
-﻿using Mapster;
-using MapsterMapper;
+﻿using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models;
+using TankGameAPI.Utils.Messages;
 using TankGameDomain;
 using TankGameInfrastructure;
 
@@ -19,7 +20,14 @@ namespace TankGameAPI.Services
 
         public async Task<string> CreateUser(CreateUserModel model)
         {
-            var user = _mapper.Map<User>(model);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Name);
+
+            if (user != null)
+            {
+                throw new Exception(Messages.User.Exists);
+            }
+
+            user = _mapper.Map<User>(model);
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();

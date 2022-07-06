@@ -6,11 +6,13 @@
         {
             public static readonly string NotFound = "Tank was not found";
             public static readonly string NoTanks = "No tanks in the field";
+            public static readonly string Exists = "Tank name already exists";
         }
 
         public static class User
         {
             public static readonly string NotFound = "User was not found";
+            public static readonly string Exists = "Username already exist";
         }
 
         public static class Field

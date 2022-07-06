@@ -27,14 +27,21 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.NotFound);
             }
 
-            var user = _context.Users.FirstOrDefault(x => x.Name == model.Name);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
                 throw new Exception(Messages.User.NotFound);
             }
 
-            var tank = _mapper.Map<Tank>(model);
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Name);
+
+            if (tank != null)
+            {
+                throw new Exception(Messages.Tank.Exists);
+            }
+
+            tank = _mapper.Map<Tank>(model);
             tank.Owner = user;
             tank.XPosition = Math.Abs(field.Width / 2);
             tank.YPosition = Math.Abs(field.Height / 2);
@@ -54,14 +61,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.NotFound);
             }
 
-            var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
                 throw new Exception(Messages.User.NotFound);
             }
 
-            var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
@@ -89,14 +96,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.NotFound);
             }
 
-            var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
                 throw new Exception(Messages.User.NotFound);
             }
 
-            var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
@@ -124,14 +131,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.NotFound);
             }
 
-            var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
                 throw new Exception(Messages.User.NotFound);
             }
 
-            var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
@@ -159,14 +166,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.NotFound);
             }
 
-            var user = _context.Users.FirstOrDefault(x => x.Name == model.Owner.Username);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
 
             if (user == null)
             {
                 throw new Exception(Messages.User.NotFound);
             }
 
-            var tank = _context.Tanks.FirstOrDefault(x => x.Name == model.Tank.Name);
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
 
             if (tank == null)
             {
