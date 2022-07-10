@@ -110,7 +110,7 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Tank.NotFound);
             }
 
-            if (field.RightBorder < tank.XPosition + 1)
+            if (field.RightBorder <= tank.XPosition + 1)
             {
                 throw new Exception(Messages.Field.OutOfBorder);
             }
@@ -145,12 +145,12 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Tank.NotFound);
             }
 
-            if (field.TopBorder > tank.YPosition + 1)
+            if (field.TopBorder > tank.YPosition - 1)
             {
                 throw new Exception(Messages.Field.OutOfBorder);
             }
 
-            tank.YPosition++;
+            tank.YPosition--;
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -180,12 +180,12 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Tank.NotFound);
             }
 
-            if (field.BottomBorder > tank.YPosition - 1)
+            if (field.BottomBorder <= tank.YPosition + 1)
             {
                 throw new Exception(Messages.Field.OutOfBorder);
             }
 
-            tank.YPosition--;
+            tank.YPosition++;
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 

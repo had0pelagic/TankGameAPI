@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TankGameAPI.Models.Field;
 using TankGameAPI.Services;
 
 namespace TankGameAPI.Controllers
@@ -15,7 +16,7 @@ namespace TankGameAPI.Controllers
         }
 
         [HttpGet("/field")]
-        public async Task<ActionResult<string>> GetField()
+        public async Task<ActionResult<FieldModel>> GetField()
         {
             return Ok(await _fieldService.GetField());
         }

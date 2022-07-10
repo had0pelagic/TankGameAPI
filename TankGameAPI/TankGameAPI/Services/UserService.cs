@@ -37,7 +37,16 @@ namespace TankGameAPI.Services
 
         public Task<List<UserModel>> GetUser()
         {
-            throw new NotImplementedException();
+            var list = new List<UserModel>() { new UserModel()
+            {
+                Username="username1"
+            },
+            new UserModel()
+            {
+                Username="username2"
+            } };
+
+            return Task.FromResult(list);
         }
     }
 }
