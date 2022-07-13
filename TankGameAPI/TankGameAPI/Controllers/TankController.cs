@@ -44,5 +44,17 @@ namespace TankGameAPI.Controllers
         {
             return Ok(await _tankService.MoveTankDown(model));
         }
+
+        [HttpPost("/tank-rotate-left")]
+        public async Task<ActionResult<string>> RotateTankLeft(MoveTankModel model)
+        {
+            return Ok(await _tankService.RotateTankLeft(model));
+        }
+
+        [HttpPost("/tank-rotate-right")]
+        public async Task<ActionResult<string>> RotateTankRight(MoveTankModel model)
+        {
+            return Ok(await _tankService.RotateTankRight(model));
+        }
     }
 }

@@ -35,6 +35,35 @@ namespace TankGameAPI.Services
             return user.Name;
         }
 
+        public async Task<string> RemoveUser(UserModel model)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username);
+
+            if (user == null)
+            {
+                throw new Exception(Messages.User.NotFound);
+            }
+
+            var tank = await _context.Tanks
+                .Include(x => x.Owner)
+                .Where(x => x.Owner.Name == model.Username)
+                .FirstOrDefaultAsync();
+
+            if (tank == null)
+            {
+                throw new Exception(Messages.Tank.NotFound);
+            }
+
+            _context.Tanks.Remove(tank);
+            _context.Entry(tank).State = EntityState.Deleted;
+            _context.Users.Remove(user);
+            _context.Entry(user).State = EntityState.Deleted;
+
+            await _context.SaveChangesAsync();
+
+            return $"{model.Username} and tank {tank.Name} was removed";
+        }
+
         public Task<List<UserModel>> GetUser()
         {
             var list = new List<UserModel>() { new UserModel()

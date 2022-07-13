@@ -191,5 +191,67 @@ namespace TankGameAPI.Services
 
             return $"Tank: {tank.Name} X: {tank.XPosition} Y: {tank.YPosition}";
         }
+
+        public async Task<string> RotateTankRight(MoveTankModel model)
+        {
+            var field = await _context.Fields.FirstOrDefaultAsync();
+
+            if (field == null)
+            {
+                throw new Exception(Messages.Field.NotFound);
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
+
+            if (user == null)
+            {
+                throw new Exception(Messages.User.NotFound);
+            }
+
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
+
+            if (tank == null)
+            {
+                throw new Exception(Messages.Tank.NotFound);
+            }
+
+            _ = tank.Rotation == 360 ? tank.Rotation = 0 : tank.Rotation += 90;
+
+            _context.Entry(tank).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return $"Tank: {tank.Name} Rotation: {tank.Rotation}";
+        }
+
+        public async Task<string> RotateTankLeft(MoveTankModel model)
+        {
+            var field = await _context.Fields.FirstOrDefaultAsync();
+
+            if (field == null)
+            {
+                throw new Exception(Messages.Field.NotFound);
+            }
+
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username);
+
+            if (user == null)
+            {
+                throw new Exception(Messages.User.NotFound);
+            }
+
+            var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Tank.Name);
+
+            if (tank == null)
+            {
+                throw new Exception(Messages.Tank.NotFound);
+            }
+
+            _ = tank.Rotation == 0 ? tank.Rotation = 270 : tank.Rotation -= 90;
+
+            _context.Entry(tank).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return $"Tank: {tank.Name} Rotation: {tank.Rotation}";
+        }
     }
 }

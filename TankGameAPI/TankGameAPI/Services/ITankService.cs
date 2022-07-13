@@ -9,5 +9,7 @@ namespace TankGameAPI.Services
         public Task<string> MoveTankRight(MoveTankModel model);
         public Task<string> MoveTankUp(MoveTankModel model);
         public Task<string> MoveTankDown(MoveTankModel model);
+        public Task<string> RotateTankRight(MoveTankModel model);
+        public Task<string> RotateTankLeft(MoveTankModel model);
     }
 }
