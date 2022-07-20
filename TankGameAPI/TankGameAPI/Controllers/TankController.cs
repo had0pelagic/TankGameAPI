@@ -56,5 +56,11 @@ namespace TankGameAPI.Controllers
         {
             return Ok(await _tankService.RotateTankRight(model));
         }
+
+        [HttpPost("/tank-attack")]
+        public async Task<ActionResult<string>> AttackTank(MoveTankModel model)
+        {
+            return Ok(await _tankService.Attack(model));
+        }
     }
 }
