@@ -64,18 +64,11 @@ namespace TankGameAPI.Services
             return $"{model.Username} and tank {tank.Name} was removed";
         }
 
-        public Task<List<UserModel>> GetUser()
+        public async Task<bool> IsUserValid(UserModel model)
         {
-            var list = new List<UserModel>() { new UserModel()
-            {
-                Username="username1"
-            },
-            new UserModel()
-            {
-                Username="username2"
-            } };
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username);
 
-            return Task.FromResult(list);
+            return user == null ? false : true;
         }
     }
 }

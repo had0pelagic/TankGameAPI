@@ -6,7 +6,6 @@ namespace TankGameAPI.Services
     {
         public Task<string> CreateUser(CreateUserModel model);
         public Task<string> RemoveUser(UserModel model);
-        public Task<List<UserModel>> GetUser();
-
+        public Task<bool> IsUserValid(UserModel model);
     }
 }

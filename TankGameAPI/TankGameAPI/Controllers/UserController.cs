@@ -27,10 +27,10 @@ namespace TankGameAPI.Controllers
             return Ok(await _userService.RemoveUser(model));
         }
 
-        [HttpGet("/get-user")]
-        public async Task<ActionResult> GetUser()
+        [HttpPost("/user-valid")]
+        public async Task<ActionResult> IsUserValid(UserModel model)
         {
-            return Ok(await _userService.GetUser());
+            return Ok(await _userService.IsUserValid(model));
         }
     }
 }
