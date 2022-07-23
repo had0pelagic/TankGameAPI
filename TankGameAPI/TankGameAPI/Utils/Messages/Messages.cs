@@ -7,6 +7,7 @@
             public static readonly string NotFound = "Tank was not found";
             public static readonly string NoTanks = "No tanks in the field";
             public static readonly string Exists = "Tank name already exists";
+            public static readonly string Collision = "Collision with obstacle";
         }
 
         public static class User

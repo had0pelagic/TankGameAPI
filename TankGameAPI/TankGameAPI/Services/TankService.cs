@@ -54,7 +54,9 @@ namespace TankGameAPI.Services
 
         public async Task<string> MoveTankLeft(MoveTankModel model)
         {
-            var field = await _context.Fields.FirstOrDefaultAsync();
+            var field = await _context.Fields
+                .Include(x => x.Obstacles)
+                .FirstOrDefaultAsync();
 
             if (field == null)
             {
@@ -80,6 +82,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.OutOfBorder);
             }
 
+            foreach (var obstacle in field.Obstacles)
+            {
+                if (tank.YPosition == obstacle.YPosition && tank.XPosition - 1 == obstacle.XPosition)
+                {
+                    throw new Exception(Messages.Tank.Collision);
+                }
+            }
+
             tank.XPosition--;
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -89,7 +99,9 @@ namespace TankGameAPI.Services
 
         public async Task<string> MoveTankRight(MoveTankModel model)
         {
-            var field = await _context.Fields.FirstOrDefaultAsync();
+            var field = await _context.Fields
+                .Include(x => x.Obstacles)
+                .FirstOrDefaultAsync();
 
             if (field == null)
             {
@@ -115,6 +127,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.OutOfBorder);
             }
 
+            foreach (var obstacle in field.Obstacles)
+            {
+                if (tank.YPosition == obstacle.YPosition && tank.XPosition + 1 == obstacle.XPosition)
+                {
+                    throw new Exception(Messages.Tank.Collision);
+                }
+            }
+
             tank.XPosition++;
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -124,7 +144,9 @@ namespace TankGameAPI.Services
 
         public async Task<string> MoveTankUp(MoveTankModel model)
         {
-            var field = await _context.Fields.FirstOrDefaultAsync();
+            var field = await _context.Fields
+                .Include(x => x.Obstacles)
+                .FirstOrDefaultAsync();
 
             if (field == null)
             {
@@ -150,6 +172,14 @@ namespace TankGameAPI.Services
                 throw new Exception(Messages.Field.OutOfBorder);
             }
 
+            foreach (var obstacle in field.Obstacles)
+            {
+                if (tank.XPosition == obstacle.XPosition && tank.YPosition - 1 == obstacle.YPosition)
+                {
+                    throw new Exception(Messages.Tank.Collision);
+                }
+            }
+
             tank.YPosition--;
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -159,7 +189,9 @@ namespace TankGameAPI.Services
 
         public async Task<string> MoveTankDown(MoveTankModel model)
         {
-            var field = await _context.Fields.FirstOrDefaultAsync();
+            var field = await _context.Fields
+                .Include(x => x.Obstacles)
+                .FirstOrDefaultAsync();
 
             if (field == null)
             {
@@ -183,6 +215,14 @@ namespace TankGameAPI.Services
             if (field.BottomBorder <= tank.YPosition + 1)
             {
                 throw new Exception(Messages.Field.OutOfBorder);
+            }
+
+            foreach (var obstacle in field.Obstacles)
+            {
+                if (tank.XPosition == obstacle.XPosition && tank.YPosition + 1 == obstacle.YPosition)
+                {
+                    throw new Exception(Messages.Tank.Collision);
+                }
             }
 
             tank.YPosition++;
@@ -317,7 +357,7 @@ namespace TankGameAPI.Services
                 {
                     continue;
                 }
-                
+
             }
 
             await _context.SaveChangesAsync();
