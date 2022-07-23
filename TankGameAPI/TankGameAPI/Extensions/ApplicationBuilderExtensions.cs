@@ -15,7 +15,7 @@ namespace TankGameAPI.Extensions
             var context = serviceProvider.GetRequiredService<Context>();
             var fieldService = serviceProvider.GetRequiredService<IFieldService>();
 
-            await fieldService.CreateField(5, 5);
+            await fieldService.CreateField(5, 5, 5);
 
             return app;
         }

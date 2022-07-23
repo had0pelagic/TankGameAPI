@@ -14,14 +14,16 @@ namespace TankGameAPI.Mapping
                 .Map(x => x.LeftBorder, y => y.LeftBorder)
                 .Map(x => x.RightBorder, y => y.RightBorder)
                 .Map(x => x.TopBorder, y => y.TopBorder)
-                .Map(x => x.BottomBorder, y => y.BottomBorder);
+                .Map(x => x.BottomBorder, y => y.BottomBorder)
+                .Map(x => x.Obstacles, y => y.Obstacles);
             config.NewConfig<FieldModel, Field>()
                .Map(x => x.Width, y => y.Width)
                .Map(x => x.Height, y => y.Height)
                .Map(x => x.LeftBorder, y => y.LeftBorder)
                .Map(x => x.RightBorder, y => y.RightBorder)
                .Map(x => x.TopBorder, y => y.TopBorder)
-               .Map(x => x.BottomBorder, y => y.BottomBorder);
+               .Map(x => x.BottomBorder, y => y.BottomBorder)
+               .Map(x => x.Obstacles, y => y.Obstacles);
         }
     }
 }

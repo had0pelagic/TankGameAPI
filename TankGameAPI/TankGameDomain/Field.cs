@@ -9,5 +9,6 @@
         public int RightBorder { get; set; }
         public int TopBorder { get; set; }
         public int BottomBorder { get; set; }
+        public List<Obstacle> Obstacles { get; set; }
     }
 }

@@ -19,30 +19,35 @@ namespace TankGameAPI.Services
             _mapper = mapper;
         }
 
-        public async Task<string> CreateField(int height, int width)
+        public async Task<string> CreateField(int height, int width, int obstacleCount)
         {
             if (_context.Fields.Any())
             {
                 throw new Exception(Messages.Field.AlreadyExists);
             }
 
-            var field = await _context.Fields.AddAsync(new Field()
+            var field = new Field()
             {
                 Height = height,
                 Width = width,
                 TopBorder = 0,
                 BottomBorder = height,
                 LeftBorder = 0,
-                RightBorder = width
-            });
+                RightBorder = width,
+                Obstacles = GenerateObstacles(height, width, obstacleCount)
+            };
+
+            await _context.Fields.AddAsync(field);
             await _context.SaveChangesAsync();
 
-            return $"Field created with height: {field.Entity.Height} width: {field.Entity.Width}";
+            return $"Field created with height: {field.Height} width: {field.Width}";
         }
 
         public async Task<FieldModel> GetField()
         {
-            var field = await _context.Fields.FirstOrDefaultAsync();
+            var field = await _context.Fields
+                .Include(x => x.Obstacles)
+                .FirstOrDefaultAsync();
 
             if (field == null)
             {
@@ -63,6 +68,30 @@ namespace TankGameAPI.Services
             fieldInformation.Tanks = tanks;
 
             return fieldInformation;
+        }
+
+        private List<Obstacle> GenerateObstacles(int height, int width, int obstacleCount)
+        {
+            var obstacles = new List<Obstacle>();
+
+            while (true)
+            {
+                if (obstacles.Count == obstacleCount)
+                {
+                    break;
+                }
+
+                var randomX = new Random().Next(width);
+                var randomY = new Random().Next(height);
+                var obstacle = new Obstacle() { XPosition = randomX, YPosition = randomY };
+
+                if (!obstacles.Contains(obstacle))
+                {
+                    obstacles.Add(obstacle);
+                }
+            }
+
+            return obstacles;
         }
     }
 }

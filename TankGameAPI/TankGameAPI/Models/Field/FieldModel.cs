@@ -1,4 +1,5 @@
 ﻿using TankGameAPI.Models.Tank;
+using TankGameDomain;
 
 namespace TankGameAPI.Models.Field
 {
@@ -11,5 +12,6 @@ namespace TankGameAPI.Models.Field
         public int TopBorder { get; set; }
         public int BottomBorder { get; set; }
         public List<TankInformationModel>? Tanks { get; set; }
+        public List<Obstacle>? Obstacles { get; set; }
     }
 }
