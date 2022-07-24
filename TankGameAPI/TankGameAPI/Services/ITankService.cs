@@ -11,6 +11,6 @@ namespace TankGameAPI.Services
         public Task<string> MoveTankDown(MoveTankModel model);
         public Task<string> RotateTankRight(MoveTankModel model);
         public Task<string> RotateTankLeft(MoveTankModel model);
-        public Task<string> Attack(MoveTankModel model);
+        public Task<TankAttackModel> Attack(MoveTankModel model);
     }
 }

@@ -294,7 +294,7 @@ namespace TankGameAPI.Services
             return $"Tank: {tank.Name} Rotation: {tank.Rotation}";
         }
 
-        public async Task<string> Attack(MoveTankModel model)
+        public async Task<TankAttackModel> Attack(MoveTankModel model)
         {
             var field = await _context.Fields.FirstOrDefaultAsync();
 
@@ -357,12 +357,11 @@ namespace TankGameAPI.Services
                 {
                     continue;
                 }
-
             }
 
             await _context.SaveChangesAsync();
 
-            return $"Tank: {tank.Name} attacked";
+            return _mapper.Map<TankAttackModel>(tank);
         }
     }
 }
