@@ -1,6 +1,7 @@
 ﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models;
+using TankGameAPI.Utils;
 using TankGameAPI.Utils.Messages;
 using TankGameDomain;
 using TankGameInfrastructure;
@@ -24,7 +25,7 @@ namespace TankGameAPI.Services
 
             if (user != null)
             {
-                throw new Exception(Messages.User.Exists);
+                throw new InvalidClientException(Messages.User.Exists);
             }
 
             user = _mapper.Map<User>(model);
@@ -37,22 +38,8 @@ namespace TankGameAPI.Services
 
         public async Task<string> RemoveUser(UserModel model)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username);
-
-            if (user == null)
-            {
-                throw new Exception(Messages.User.NotFound);
-            }
-
-            var tank = await _context.Tanks
-                .Include(x => x.Owner)
-                .Where(x => x.Owner.Name == model.Username)
-                .FirstOrDefaultAsync();
-
-            if (tank == null)
-            {
-                throw new Exception(Messages.Tank.NotFound);
-            }
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username) ?? throw new InvalidClientException(Messages.User.NotFound);
+            var tank = await _context.Tanks.Include(x => x.Owner).Where(x => x.Owner.Name == model.Username).FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Tank.NotFound);
 
             _context.Tanks.Remove(tank);
             _context.Entry(tank).State = EntityState.Deleted;

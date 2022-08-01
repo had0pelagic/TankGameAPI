@@ -26,6 +26,7 @@ builder.AddServices();
 builder.AddMapper();
 
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 await app.PrepareDatabase();
+
+app.SetupExceptionHandler();
 
 app.UseHttpsRedirection();
 

@@ -13,14 +13,14 @@
         public static class User
         {
             public static readonly string NotFound = "User was not found";
-            public static readonly string Exists = "Username already exist";
+            public static readonly string Exists = "User already exist";
         }
 
         public static class Field
         {
             public static readonly string NotFound = "Field was not found";
             public static readonly string OutOfBorder = "Moving out of field is prohibited";
-            public static readonly string AlreadyExists = "Field already exists";
+            public static readonly string Exists = "Field already exists";
         }
     }
 }

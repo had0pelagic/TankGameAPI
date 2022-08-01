@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Models.Field;
 using TankGameAPI.Models.Tank;
+using TankGameAPI.Utils;
 using TankGameAPI.Utils.Messages;
 using TankGameDomain;
 using TankGameInfrastructure;
@@ -23,7 +24,7 @@ namespace TankGameAPI.Services
         {
             if (_context.Fields.Any())
             {
-                throw new Exception(Messages.Field.AlreadyExists);
+                throw new InvalidClientException(Messages.Field.Exists);
             }
 
             var field = new Field()
@@ -45,23 +46,12 @@ namespace TankGameAPI.Services
 
         public async Task<FieldModel> GetField()
         {
-            var field = await _context.Fields
-                .Include(x => x.Obstacles)
-                .FirstOrDefaultAsync();
-
-            if (field == null)
-            {
-                throw new Exception(Messages.Field.AlreadyExists);
-            }
-
-            var tanks = _context.Tanks
-                .Include(x => x.Owner)
-                .Select(x => _mapper.Map<TankInformationModel>(x))
-                .ToList();
+            var field = await _context.Fields.Include(x => x.Obstacles).FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Field.Exists);
+            var tanks = _context.Tanks.Include(x => x.Owner).Select(x => _mapper.Map<TankInformationModel>(x)).ToList();
 
             if (tanks.Count == 0)
             {
-                throw new Exception(Messages.Tank.NoTanks);
+                throw new InvalidClientException(Messages.Tank.NoTanks);
             }
 
             var fieldInformation = _mapper.Map<FieldModel>(field);

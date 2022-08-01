@@ -1,7 +1,6 @@
-﻿using Mapster;
-using MapsterMapper;
-using TankGameAPI.Mapping;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using TankGameAPI.Services;
+using TankGameAPI.Utils;
 using TankGameInfrastructure;
 
 namespace TankGameAPI.Extensions
@@ -20,20 +19,47 @@ namespace TankGameAPI.Extensions
             return app;
         }
 
-        public static void AddServices(this WebApplicationBuilder builder)
+        public static void SetupExceptionHandler(this IApplicationBuilder app)
         {
-            builder.Services.AddScoped<ITankService, TankService>();
-            builder.Services.AddScoped<IUserService, UserService>();
-            builder.Services.AddScoped<IFieldService, FieldService>();
-        }
+            app.UseExceptionHandler(exception =>
+            {
+                exception.Run(async context =>
+                {
+                    var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+                    context.Response.ContentType = "application/json";
 
-        public static void AddMapper(this WebApplicationBuilder builder)
-        {
-            var config = new TypeAdapterConfig();
-            config.Apply(new TankMappings());
-            config.Apply(new UserMappings());
-            builder.Services.AddSingleton(config);
-            builder.Services.AddScoped<IMapper, ServiceMapper>();
+                    if (contextFeature == null)
+                    {
+                        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                        await context.Response.WriteAsync(new Error
+                        {
+                            Code = StatusCodes.Status500InternalServerError,
+                            Message = "Server error"
+                        }.ToString());
+                        return;
+                    }
+
+                    switch (contextFeature.Error)
+                    {
+                        case InvalidClientException:
+                            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                            await context.Response.WriteAsync(new Error
+                            {
+                                Code = StatusCodes.Status400BadRequest,
+                                Message = contextFeature.Error.Message
+                            }.ToString());
+                            break;
+                        default:
+                            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                            await context.Response.WriteAsync(new Error
+                            {
+                                Code = StatusCodes.Status500InternalServerError,
+                                Message = "Server error"
+                            }.ToString());
+                            break;
+                    }
+                });
+            });
         }
     }
 }
