@@ -1,5 +1,5 @@
 ﻿using Mapster;
-using TankGameAPI.Models;
+using TankGameAPI.Models.User;
 using TankGameDomain;
 
 namespace TankGameAPI.Mapping

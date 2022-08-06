@@ -64,16 +64,12 @@ namespace TankGameAPI.Services
         {
             var obstacles = new List<Obstacle>();
 
-            while (true)
+            while (obstacles.Count != obstacleCount)
             {
-                if (obstacles.Count == obstacleCount)
-                {
-                    break;
-                }
+                var x = new Random().Next(width);
+                var y = new Random().Next(height);
 
-                var randomX = new Random().Next(width);
-                var randomY = new Random().Next(height);
-                var obstacle = new Obstacle() { XPosition = randomX, YPosition = randomY };
+                var obstacle = new Obstacle() { XPosition = x, YPosition = y };
 
                 if (!obstacles.Contains(obstacle))
                 {

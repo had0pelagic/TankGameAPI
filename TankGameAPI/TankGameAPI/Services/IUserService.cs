@@ -1,4 +1,4 @@
-﻿using TankGameAPI.Models;
+﻿using TankGameAPI.Models.User;
 
 namespace TankGameAPI.Services
 {

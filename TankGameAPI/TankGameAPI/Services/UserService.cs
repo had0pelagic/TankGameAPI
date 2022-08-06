@@ -1,6 +1,6 @@
 ﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
-using TankGameAPI.Models;
+using TankGameAPI.Models.User;
 using TankGameAPI.Utils;
 using TankGameAPI.Utils.Messages;
 using TankGameDomain;

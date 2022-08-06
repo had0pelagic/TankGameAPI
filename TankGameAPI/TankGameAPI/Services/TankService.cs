@@ -1,5 +1,6 @@
 ﻿using MapsterMapper;
 using Microsoft.EntityFrameworkCore;
+using TankGameAPI.Models;
 using TankGameAPI.Models.Tank;
 using TankGameAPI.Utils;
 using TankGameAPI.Utils.Messages;
@@ -24,16 +25,20 @@ namespace TankGameAPI.Services
             var field = await _context.Fields.FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Field.NotFound);
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Owner.Username) ?? throw new InvalidClientException(Messages.User.NotFound);
             var tank = await _context.Tanks.FirstOrDefaultAsync(x => x.Name == model.Name);
-            
+
             if (tank != null)
             {
                 throw new InvalidClientException(Messages.Tank.Exists);
             }
 
+            var tankCoordinates = await GetTankCoordinates();
+            int[] rotation = { 0, 90, 180, 270 };
+
             tank = _mapper.Map<Tank>(model);
             tank.Owner = user;
-            tank.XPosition = Math.Abs(field.Width / 2);
-            tank.YPosition = Math.Abs(field.Height / 2);
+            tank.XPosition = tankCoordinates.Item1;
+            tank.YPosition = tankCoordinates.Item2;
+            tank.Rotation = rotation[new Random().Next(rotation.Length)];
 
             await _context.Tanks.AddAsync(tank);
             await _context.SaveChangesAsync();
@@ -61,6 +66,7 @@ namespace TankGameAPI.Services
             }
 
             tank.XPosition--;
+
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -87,6 +93,7 @@ namespace TankGameAPI.Services
             }
 
             tank.XPosition++;
+
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -113,6 +120,7 @@ namespace TankGameAPI.Services
             }
 
             tank.YPosition--;
+
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -139,6 +147,7 @@ namespace TankGameAPI.Services
             }
 
             tank.YPosition++;
+
             _context.Entry(tank).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
@@ -188,6 +197,83 @@ namespace TankGameAPI.Services
             await _context.SaveChangesAsync();
 
             return _mapper.Map<TankAttackModel>(tank);
+        }
+
+        private async Task<Tuple<int, int>> GetTankCoordinates()
+        {
+            var field = await _context.Fields.Include(x => x.Obstacles).FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Field.NotFound);
+            var tanks = await _context.Tanks.ToListAsync();
+
+            var tanksCoordinates = tanks.Select(x => new CoordinatesModel()
+            {
+                XPosition = x.XPosition,
+                YPosition = x.YPosition
+            });
+            var obstacleCoordinates = field.Obstacles.Select(x => new CoordinatesModel()
+            {
+                XPosition = x.XPosition,
+                YPosition = x.YPosition
+            });
+            var obstacles = tanksCoordinates.Concat(obstacleCoordinates);
+
+            while (true)
+            {
+                var x = new Random().Next(field.Width);
+                var y = new Random().Next(field.Height);
+
+                var isObstacleInCurrentPosition = obstacles.FirstOrDefault(o => o.XPosition == x && o.YPosition == y) != null;
+                if (IsTrapped(x, y, field.Width, field.Height, obstacles) || isObstacleInCurrentPosition)
+                {
+                    continue;
+                }
+
+                return new Tuple<int, int>(x, y);
+            }
+        }
+
+        private bool IsTrapped(int x, int y, int width, int height, IEnumerable<CoordinatesModel> obstacles)
+        {
+            var upObstacle = obstacles.FirstOrDefault(o => o.XPosition == x && o.YPosition == y - 1) != null;
+            if (upObstacle || y - 1 == -1)
+            {
+                upObstacle = true;
+            }
+            else
+            {
+                upObstacle = false;
+            }
+
+            var downObstacle = obstacles.FirstOrDefault(o => o.XPosition == x && o.YPosition == y + 1) != null;
+            if (downObstacle || y + 1 == height)
+            {
+                downObstacle = true;
+            }
+            else
+            {
+                downObstacle = false;
+            }
+
+            var rightObstacle = obstacles.FirstOrDefault(o => o.XPosition == x + 1 && o.YPosition == y) != null;
+            if (rightObstacle || x + 1 == width)
+            {
+                rightObstacle = true;
+            }
+            else
+            {
+                rightObstacle = false;
+            }
+
+            var leftObstacle = obstacles.FirstOrDefault(o => o.XPosition == x - 1 && o.YPosition == y) != null;
+            if (leftObstacle || x - 1 == -1)
+            {
+                leftObstacle = true;
+            }
+            else
+            {
+                leftObstacle = false;
+            }
+
+            return upObstacle && downObstacle && rightObstacle && leftObstacle;
         }
 
         private void HandleAttack(Tank tank, List<Tank> tanks)

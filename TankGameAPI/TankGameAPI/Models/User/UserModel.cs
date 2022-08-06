@@ -1,4 +1,4 @@
-﻿namespace TankGameAPI.Models
+﻿namespace TankGameAPI.Models.User
 {
     public class UserModel
     {

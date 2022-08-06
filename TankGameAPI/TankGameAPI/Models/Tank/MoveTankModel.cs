@@ -1,4 +1,6 @@
-﻿namespace TankGameAPI.Models.Tank
+﻿using TankGameAPI.Models.User;
+
+namespace TankGameAPI.Models.Tank
 {
     public class MoveTankModel
     {

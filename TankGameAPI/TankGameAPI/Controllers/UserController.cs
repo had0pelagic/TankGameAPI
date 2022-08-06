@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TankGameAPI.Models;
+using TankGameAPI.Models.User;
 using TankGameAPI.Services;
 
 namespace TankGameAPI.Controllers
