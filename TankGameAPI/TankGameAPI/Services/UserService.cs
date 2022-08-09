@@ -19,6 +19,12 @@ namespace TankGameAPI.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Creates new user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidClientException"></exception>
         public async Task<string> CreateUser(CreateUserModel model)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Name);
@@ -36,6 +42,12 @@ namespace TankGameAPI.Services
             return user.Name;
         }
 
+        /// <summary>
+        /// Removes existing user
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidClientException"></exception>
         public async Task<string> RemoveUser(UserModel model)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username) ?? throw new InvalidClientException(Messages.User.NotFound);
@@ -51,6 +63,11 @@ namespace TankGameAPI.Services
             return $"{model.Username} and tank {tank.Name} was removed";
         }
 
+        /// <summary>
+        /// Checks if user exists by given username
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task<bool> IsUserValid(UserModel model)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Name == model.Username);

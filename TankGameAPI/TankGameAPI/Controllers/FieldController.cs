@@ -15,6 +15,10 @@ namespace TankGameAPI.Controllers
             _fieldService = fieldService;
         }
 
+        /// <summary>
+        /// Gets all data about current field
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("/field")]
         public async Task<ActionResult<FieldModel>> GetField()
         {

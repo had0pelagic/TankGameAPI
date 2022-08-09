@@ -1,19 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using TankGameAPI.Extensions;
+using TankGameAPI.Utils;
 using TankGameInfrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<Context>(options => options.UseInMemoryDatabase("tank"));
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowedOrigins", policy =>
+    options.AddPolicy("Cors", policy =>
     {
         policy.AllowAnyHeader();
         policy.AllowAnyMethod();
@@ -21,26 +15,32 @@ builder.Services.AddCors(options =>
         policy.WithExposedHeaders("Content-Disposition");
     });
 });
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<Context>(options => options.UseInMemoryDatabase("tank"));
+builder.Services.Configure<FieldInfo>(builder.Configuration.GetSection("FieldInfo"));
 
 builder.AddServices();
 builder.AddMapper();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-await app.PrepareDatabase();
+
+var fieldInfo = builder.Configuration.GetSection("FieldInfo").Get<FieldInfo>();
+await app.PrepareDatabase(fieldInfo);
 
 app.SetupExceptionHandler();
 
 app.UseHttpsRedirection();
 
-app.UseCors("AllowedOrigins");
+app.UseCors("Cors");
 
 app.UseAuthorization();
 

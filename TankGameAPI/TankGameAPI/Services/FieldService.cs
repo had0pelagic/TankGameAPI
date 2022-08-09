@@ -20,6 +20,35 @@ namespace TankGameAPI.Services
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Returns all data about current field
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="InvalidClientException"></exception>
+        public async Task<FieldModel> GetField()
+        {
+            var field = await _context.Fields.Include(x => x.Obstacles).FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Field.Exists);
+            var tanks = _context.Tanks.Include(x => x.Owner).Select(x => _mapper.Map<TankInformationModel>(x)).ToList();
+
+            if (tanks.Count == 0)
+            {
+                throw new InvalidClientException(Messages.Tank.NoTanks);
+            }
+
+            var fieldInformation = _mapper.Map<FieldModel>(field);
+            fieldInformation.Tanks = tanks;
+
+            return fieldInformation;
+        }
+
+        /// <summary>
+        /// Creates a playing field
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="obstacleCount"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidClientException"></exception>
         public async Task<string> CreateField(int height, int width, int obstacleCount)
         {
             if (_context.Fields.Any())
@@ -44,22 +73,13 @@ namespace TankGameAPI.Services
             return $"Field created with height: {field.Height} width: {field.Width}";
         }
 
-        public async Task<FieldModel> GetField()
-        {
-            var field = await _context.Fields.Include(x => x.Obstacles).FirstOrDefaultAsync() ?? throw new InvalidClientException(Messages.Field.Exists);
-            var tanks = _context.Tanks.Include(x => x.Owner).Select(x => _mapper.Map<TankInformationModel>(x)).ToList();
-
-            if (tanks.Count == 0)
-            {
-                throw new InvalidClientException(Messages.Tank.NoTanks);
-            }
-
-            var fieldInformation = _mapper.Map<FieldModel>(field);
-            fieldInformation.Tanks = tanks;
-
-            return fieldInformation;
-        }
-
+        /// <summary>
+        /// Generates obstacles, that are used in the field
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="width"></param>
+        /// <param name="obstacleCount"></param>
+        /// <returns></returns>
         private List<Obstacle> GenerateObstacles(int height, int width, int obstacleCount)
         {
             var obstacles = new List<Obstacle>();

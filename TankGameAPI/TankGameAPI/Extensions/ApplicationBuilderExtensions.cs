@@ -1,24 +1,32 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using TankGameAPI.Services;
 using TankGameAPI.Utils;
-using TankGameInfrastructure;
 
 namespace TankGameAPI.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static async Task<IApplicationBuilder> PrepareDatabase(this IApplicationBuilder app)
+        /// <summary>
+        /// Prepares database configuring and seeding data
+        /// </summary>
+        /// <param name="app"></param>
+        /// <param name="fieldInfo"></param>
+        /// <returns></returns>
+        public static async Task<IApplicationBuilder> PrepareDatabase(this IApplicationBuilder app, FieldInfo fieldInfo)
         {
             using var scopedServices = app.ApplicationServices.CreateScope();
             var serviceProvider = scopedServices.ServiceProvider;
-            var context = serviceProvider.GetRequiredService<Context>();
             var fieldService = serviceProvider.GetRequiredService<IFieldService>();
 
-            await fieldService.CreateField(5, 5, 5);
+            await fieldService.CreateField(fieldInfo.Height, fieldInfo.Width, fieldInfo.Obstacles);
 
             return app;
         }
 
+        /// <summary>
+        /// Setups custom exception
+        /// </summary>
+        /// <param name="app"></param>
         public static void SetupExceptionHandler(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(exception =>
